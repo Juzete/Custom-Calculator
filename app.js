@@ -15,6 +15,7 @@ buttonPanel.addEventListener("click", (event) => {
 
   if (event.target.closest(".operation"))
     result.innerHTML = operationsHandler(element, resultContent);
+  console.log(result.innerHTML, "inner");
 });
 
 function numberHandler(input, value) {
@@ -29,12 +30,13 @@ function valueHandler(value) {
     firstValue = value;
   else if (Number.isInteger(parseInt(value, 10)) && firstValue !== null)
     secondValue = value;
-  firstValue ? (firstValue = parseInt(firstValue, 10)) : null;
-  secondValue ? (secondValue = parseInt(secondValue, 10)) : null;
+  if (firstValue) firstValue = parseInt(firstValue, 10);
+  if (secondValue) secondValue = parseInt(secondValue, 10);
+  console.log(firstValue, secondValue, " value Handler");
 }
 
 function operationsHandler(input, value) {
-  console.log(input);
+  let solution;
   valueHandler(value);
   const sum = () => firstValue + secondValue;
   const minus = () => firstValue - secondValue;
@@ -42,8 +44,16 @@ function operationsHandler(input, value) {
   const divide = () => firstValue / secondValue;
   const remainder = () => firstValue % secondValue;
   const abs = () => {
-    if (secondValue === null) return firstValue * -1;
-    else return secondValue * -1;
+    if (secondValue === null) {
+      solution = firstValue * -1;
+      firstValue = null;
+      return solution;
+    } else {
+      solution = secondValue * -1;
+      console.log(solution, secondValue, "sss");
+      secondValue = null;
+      return solution * -1;
+    }
   };
   const equal = () => firstValue;
 
@@ -55,40 +65,39 @@ function operationsHandler(input, value) {
     return 0;
   } else if (input === "±") return abs();
 
+  if (firstValue && !secondValue) return input;
+
   if (firstValue && secondValue) {
     switch (operator) {
       case "+":
-        firstValue = sum();
+        solution = sum();
+        firstValue = null;
         secondValue = null;
-        operator = input;
-        return firstValue;
+        return solution;
       case "-":
-        firstValue = minus();
+        solution = minus();
+        firstValue = null;
         secondValue = null;
-        operator = input;
-        return firstValue;
+        return solution;
       case "x":
-        firstValue = multiply();
+        solution = multiply();
+        firstValue = null;
         secondValue = null;
-        operator = input;
-        return firstValue;
+        return solution;
       case "÷":
-        firstValue = divide();
+        solution = divide();
+        firstValue = null;
         secondValue = null;
-        operator = input;
-        return firstValue;
+        return solution;
       case "%":
-        firstValue = remainder();
+        solution = remainder();
+        firstValue = null;
         secondValue = null;
-        operator = input;
-        return firstValue;
+        return solution;
       case "=":
-        operator = input;
         return equal();
       default:
         break;
     }
   }
-
-  return input;
 }
