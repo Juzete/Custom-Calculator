@@ -1,50 +1,55 @@
-.calc-container{
-    width: 350px;
-    height: 400px;
-    margin: 15% auto 0 auto;
-    font-family: 'Montserrat', sans-serif;
-    color: rgb(241, 241, 241);
-    overflow:hidden;
-    border-radius: 20px 20px 20px 20px;
-    box-shadow: 11px 11px 36px 5px rgba(34, 60, 80, 0.45);
+.calc-container {
+  width: 350px;
+  height: 400px;
+  margin: 15% auto 0 auto;
+  font-family: "Montserrat", sans-serif;
+  color: rgb(241, 241, 241);
+  overflow: hidden;
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 11px 11px 36px 5px rgba(34, 60, 80, 0.45);
 }
 
-.result{
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 15px;
-    background-color: #464749;
-    height: 70px;
-    font-size: 48px;
-    border-radius: 20px 20px 0 0;
+.result {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+  background-color: #464749;
+  height: 70px;
+  font-size: 48px;
+  border-radius: 20px 20px 0 0;
 }
 
-.button-panel{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    background: #676869;
-    height: 330px;
-    border-radius: 0 0 20px 20px;
-    overflow: hidden;
+.button-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background: #676869;
+  height: 330px;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
 }
 
-.zero{
-    grid-column: 1/3; 
+.zero {
+  grid-column: 1/3;
 }
 
-button{
-    background: #767778;
-    border: none;
-    border-radius: 0;
-    margin: 1px 1px 0px 1px;
-    color: white;
-    font-size: 20px;
+button {
+  background: #767778;
+  border: none;
+  border-radius: 0;
+  margin: 1px 1px 0px 1px;
+  color: white;
+  font-size: 20px;
 }
 
-.second-color{
-    margin: 1px 0px 0px 1px;
+.button-panel > button:hover {
+  background-color: #999999;
+  cursor: pointer;
 }
 
-.second-color{
-    background: #fea003;
+.second-color {
+  margin: 1px 0px 0px 1px;
+}
+
+.second-color {
+  background: #fea003;
 }
