@@ -9,6 +9,7 @@ import {
 } from "./operations.js";
 const buttonPanel = document.querySelector(".button-panel");
 const result = document.querySelector(".result");
+const theme = document.querySelectorAll(".theme");
 let firstValue = null;
 let secondValue = null;
 let operator = null;
@@ -53,7 +54,7 @@ function operationsHandler(input, value) {
   if (input === "AC") {
     firstValue = null;
     secondValue = null;
-    return 0;
+    return "0";
   } else if (input === "±") return abs(firstValue, secondValue, solution);
 
   if (firstValue && secondValue === null) return input;
@@ -92,3 +93,11 @@ function operationsHandler(input, value) {
     }
   }
 }
+
+function themeSwitch(color) {
+  theme.forEach((item) => {
+    item.classList.add(color);
+  });
+}
+
+themeSwitch("dark");

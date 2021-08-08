@@ -1,13 +1,8 @@
-body {
-  background: linear-gradient(90deg, #b9deed, #efefef);
-}
-
 .calc-container {
   width: 350px;
   height: 400px;
   margin: 15% auto 0 auto;
   font-family: "Montserrat", sans-serif;
-  color: rgb(241, 241, 241);
   overflow: hidden;
   border-radius: 20px 20px 20px 20px;
   box-shadow: 11px 11px 36px 5px rgba(34, 60, 80, 0.45);
@@ -17,7 +12,6 @@ body {
   display: flex;
   justify-content: flex-end;
   padding-right: 15px;
-  background-color: #464749;
   height: 70px;
   font-size: 48px;
   border-radius: 20px 20px 0 0;
@@ -26,7 +20,6 @@ body {
 .button-panel {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  background: #676869;
   height: 330px;
   border-radius: 0 0 20px 20px;
   overflow: hidden;
@@ -37,7 +30,6 @@ body {
 }
 
 button {
-  background: #767778;
   border: none;
   border-radius: 0;
   margin: 1px 1px 0px 1px;
@@ -46,7 +38,6 @@ button {
 }
 
 .button-panel > button:hover {
-  background-color: #999999;
   cursor: pointer;
 }
 
@@ -54,6 +45,63 @@ button {
   margin: 1px 0px 0px 1px;
 }
 
-.second-color {
+/* Dark Theme */
+body.dark {
+  background: linear-gradient(90deg, #b9deed, #efefef);
+}
+
+.dark {
+  color: rgb(241, 241, 241);
+}
+
+.result.dark {
+  background-color: #464749;
+}
+
+.button-panel.dark {
+  background: #676869;
+}
+
+button.dark {
+  background: #767778;
+  color: rgb(241, 241, 241);
+}
+
+.button-panel.dark > button:hover {
+  background-color: #999999;
+}
+
+.second-color.dark {
   background: #fea003;
+}
+
+/* Light Theme */
+
+body.light {
+  background: linear-gradient(90deg, #f598a8, #f6edb2);
+}
+
+.light {
+  color: rgb(22, 22, 22);
+}
+
+.result.light {
+  background-color: #cfe0fd;
+}
+
+.button-panel.light {
+  background: #afafaf;
+}
+
+button.light {
+  background: #ececec;
+  color: black;
+}
+
+.button-panel.light > button:hover {
+  background-color: #c4cdff;
+}
+
+.second-color.light {
+  background: #8785fa;
 }
