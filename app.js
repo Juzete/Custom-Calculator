@@ -41,7 +41,8 @@ function operationsHandler(input, value) {
   const sum = () => firstValue + secondValue;
   const minus = () => firstValue - secondValue;
   const multiply = () => firstValue * secondValue;
-  const divide = () => firstValue / secondValue;
+  const divide = () => secondValue == 0 ? "divide by zero" : (firstValue / secondValue).toFixed(5);
+
   const remainder = () => firstValue % secondValue;
   const abs = () => {
     if (secondValue === null) {
@@ -56,7 +57,7 @@ function operationsHandler(input, value) {
   };
   const equal = () => firstValue;
 
-  if (!secondValue) operator = input;
+  if (secondValue === null) operator = input;
 
   if (input === "AC") {
     firstValue = null;
@@ -64,9 +65,10 @@ function operationsHandler(input, value) {
     return 0;
   } else if (input === "±") return abs();
 
-  if (firstValue && !secondValue) return input;
+  if (firstValue && secondValue === null) return input;
 
-  if (firstValue && secondValue) {
+  if (firstValue !== null && secondValue !== null) {
+    console.log(firstValue,secondValue,"in switch")
     switch (operator) {
       case "+":
         solution = sum();
@@ -79,11 +81,13 @@ function operationsHandler(input, value) {
         secondValue = null;
         return solution;
       case "x":
+        console.log("entr in switch");
         solution = multiply();
         firstValue = null;
         secondValue = null;
         return solution;
-      case "/":
+      case "÷":
+        console.log("entr in switch");
         solution = divide();
         firstValue = null;
         secondValue = null;
