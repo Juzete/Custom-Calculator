@@ -43,13 +43,11 @@ function valueHandler(value) {
   if (secondValue) secondValue = parseInt(secondValue, 10);
 }
 
-
 function operationsHandler(input, value) {
   let solution;
   valueHandler(value);
 
   if (firstValue === null && secondValue === null) return input;
-  if (firstValue && secondValue === null) return input;
   if (secondValue === null) operator = input;
 
   if (input === "AC") {
@@ -57,6 +55,8 @@ function operationsHandler(input, value) {
     secondValue = null;
     return 0;
   } else if (input === "±") return abs(firstValue, secondValue, solution);
+
+  if (firstValue && secondValue === null) return input;
 
   if (firstValue !== null && secondValue !== null) {
     switch (operator) {
