@@ -1,3 +1,12 @@
+import {
+  sum,
+  minus,
+  multiply,
+  divide,
+  remainder,
+  abs,
+  equal,
+} from "./operations.js";
 const buttonPanel = document.querySelector(".button-panel");
 const result = document.querySelector(".result");
 let firstValue = null;
@@ -23,7 +32,10 @@ function numberHandler(input, value) {
 }
 
 function valueHandler(value) {
-  if (Number.isInteger(parseInt(value, 10)) && firstValue === null)
+  if (!Number.isInteger(parseInt(value, 10))) {
+    firstValue = null;
+    secondValue = null;
+  } else if (Number.isInteger(parseInt(value, 10)) && firstValue === null)
     firstValue = value;
   else if (Number.isInteger(parseInt(value, 10)) && firstValue !== null)
     secondValue = value;
@@ -31,67 +43,50 @@ function valueHandler(value) {
   if (secondValue) secondValue = parseInt(secondValue, 10);
 }
 
+
 function operationsHandler(input, value) {
   let solution;
   valueHandler(value);
-  const sum = () => firstValue + secondValue;
-  const minus = () => firstValue - secondValue;
-  const multiply = () => firstValue * secondValue;
-  const divide = () =>
-    secondValue == 0 ? "divide by zero" : (firstValue / secondValue).toFixed(5);
-  const remainder = () => firstValue % secondValue;
-  const abs = () => {
-    if (secondValue === null) {
-      solution = firstValue * -1;
-      firstValue = null;
-      return solution;
-    } else {
-      solution = secondValue * -1;
-      secondValue = null;
-      return solution;
-    }
-  };
-  const equal = () => firstValue;
 
+  if (firstValue === null && secondValue === null) return input;
+  if (firstValue && secondValue === null) return input;
   if (secondValue === null) operator = input;
 
   if (input === "AC") {
     firstValue = null;
     secondValue = null;
     return 0;
-  } else if (input === "±") return abs();
-
-  if (firstValue && secondValue === null) return input;
+  } else if (input === "±") return abs(firstValue, secondValue, solution);
 
   if (firstValue !== null && secondValue !== null) {
     switch (operator) {
       case "+":
-        solution = sum();
+        solution = sum(firstValue, secondValue);
         firstValue = null;
         secondValue = null;
         return solution;
       case "-":
-        solution = minus();
+        solution = minus(firstValue, secondValue);
         firstValue = null;
         secondValue = null;
         return solution;
       case "x":
-        solution = multiply();
+        solution = multiply(firstValue, secondValue);
         firstValue = null;
         secondValue = null;
         return solution;
       case "÷":
-        solution = divide();
+        solution = divide(firstValue, secondValue);
         firstValue = null;
         secondValue = null;
         return solution;
       case "%":
-        solution = remainder();
+        solution = remainder(firstValue, secondValue);
         firstValue = null;
         secondValue = null;
         return solution;
       case "=":
-        return equal();
+        return equal(firstValue);
       default:
         break;
     }
