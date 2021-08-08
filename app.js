@@ -50,9 +50,8 @@ function operationsHandler(input, value) {
       return solution;
     } else {
       solution = secondValue * -1;
-      console.log(solution, secondValue, "sss");
       secondValue = null;
-      return solution * -1;
+      return solution;
     }
   };
   const equal = () => firstValue;
@@ -84,7 +83,7 @@ function operationsHandler(input, value) {
         firstValue = null;
         secondValue = null;
         return solution;
-      case "÷":
+      case "/":
         solution = divide();
         firstValue = null;
         secondValue = null;
