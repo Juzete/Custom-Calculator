@@ -5,6 +5,8 @@ const output_operations_element = document.querySelector(
 const output_result_element = document.querySelector(".result .value");
 const theme_elements = document.querySelectorAll(".theme");
 
+let memValue = 0;
+
 let data = {
   operation: [],
   formula: [],
@@ -106,13 +108,42 @@ let calc_buttons = [
     formula: 0,
     type: "number",
   },
+  {
+    symbol: "(",
+    formula: "(",
+    type: "number",
+  },
+  {
+    symbol: ")",
+    formula: ")",
+    type: "number",
+  },
+  {
+    symbol: "mc",
+    formula: false,
+    type: "save",
+  },
+  {
+    symbol: "m+",
+    formula: false,
+    type: "save",
+  },
+  {
+    symbol: "m-",
+    formula: false,
+    type: "save",
+  },
+  {
+    symbol: "mr",
+    formula: false,
+    type: "save",
+  },
 ];
 
 buttonPanel_element.addEventListener("click", (event) => {
   const element = event.target.textContent;
 
   if (!event.target.closest("button")) return;
-
   calc_buttons.forEach((button) => {
     if (button.symbol == element) calculator(button);
   });
@@ -125,6 +156,7 @@ function calculator(button) {
   } else if (button.type == "number") {
     data.operation.push(button.symbol);
     data.formula.push(button.formula);
+    console.log(data);
   } else if (button.type == "key") {
     if (button.symbol == "AC") {
       data.operation = [];
@@ -134,9 +166,16 @@ function calculator(button) {
       data.operation.pop();
       data.formula.pop();
     }
-  } else if (button.type == "calculate") {
-    let result = eval(data.formula.join(""));
-    updateOutputResult(result);
+  } else if (button.type == "calculate")
+    updateOutputResult(eval(data.formula.join("")));
+  else if (button.type == "save") {
+    if (button.symbol == "m+")
+      memValue += parseInt(output_result_element.innerHTML, 10);
+    else if (button.symbol == "m-")
+      memValue -= parseInt(output_result_element.innerHTML, 10);
+    else if (button.symbol == "mr") updateOutputResult(memValue);
+    else if (button.symbol == "mc") memValue = 0;
+    console.log(memValue);
   }
 
   updateOutputOperation(data.operation.join(""));
