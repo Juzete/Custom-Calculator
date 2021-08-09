@@ -1,101 +1,127 @@
-import {
-  sum,
-  minus,
-  multiply,
-  divide,
-  remainder,
-  abs,
-  equal,
-} from "./operations.js";
-const buttonPanel = document.querySelector(".button-panel");
-const result = document.querySelector(".result");
-const theme = document.querySelectorAll(".theme");
-let firstValue = null;
-let secondValue = null;
-let operator = null;
+const buttonPanel_element = document.querySelector(".button-panel");
+const result_element = document.querySelector(".result");
+const theme_elements = document.querySelectorAll(".theme");
 
-buttonPanel.addEventListener("click", (event) => {
+let data = {
+  operation : [],
+  formula : [],
+}
+
+let calc_buttons = [
+  {
+    symbol : "AC",
+    formula : false,
+    type : "key"
+  },
+  {
+    symbol : "±",
+    formula : "*(-1)",
+    type : "number"
+  },
+  {
+    symbol : "%",
+    formula : "/100",
+    type : "number"
+  },
+  {
+    symbol : "÷",
+    formula : "/",
+    type : "operator"
+  },
+  {
+    symbol : "x",
+    formula : "*",
+    type : "operator"
+  },
+  {
+    symbol : "-",
+    formula : "-",
+    type : "operator"
+  },
+  {
+    symbol : "+",
+    formula : "+",
+    type : "operator"
+  },
+  {
+    symbol : "=",
+    formula : "=",
+    type : "calculate"
+  },
+  {
+    symbol : ".",
+    formula : ".",
+    type : "number"
+},
+{
+  symbol : 1,
+  formula : 1,
+  type : "number"
+},
+{
+  symbol : 2,
+  formula : 2,
+  type : "number"
+},
+{
+  symbol : 3,
+  formula : 3,
+  type : "number"
+},
+{
+  symbol : 4,
+  formula : 4,
+  type : "number"
+},
+{
+  symbol : 5,
+  formula : 5,
+  type : "number"
+},
+{
+  symbol : 6,
+  formula : 6,
+  type : "number"
+},
+{
+  symbol : 7,
+  formula : 7,
+  type : "number"
+},
+{
+  symbol : 8,
+  formula : 8,
+  type : "number"
+},
+{
+  symbol : 9,
+  formula : 9,
+  type : "number"
+},
+{
+  symbol : 0,
+  formula : 0,
+  type : "number"
+},
+]
+
+
+buttonPanel_element.addEventListener("click", (event) => {
   const element = event.target.textContent;
-  let resultContent = document.querySelector(".result").textContent.trim();
 
   if (!event.target.closest("button")) return;
-  if (event.target.closest(".number"))
-    result.innerHTML = numberHandler(element, resultContent);
-  if (event.target.closest(".operation"))
-    result.innerHTML = operationsHandler(element, resultContent);
+  
+  calc_buttons.forEach(button => {
+    if(button.symbol == element) console.log(element);
+  })
 });
 
-function numberHandler(input, value) {
-  if (value == 0) value = input;
-  else if (!Number.isInteger(parseInt(value, 10))) return input;
-  else value += input;
-  return value;
-}
 
-function valueHandler(value) {
-  if (!Number.isInteger(parseInt(value, 10))) {
-    firstValue = null;
-    secondValue = null;
-  } else if (Number.isInteger(parseInt(value, 10)) && firstValue === null)
-    firstValue = value;
-  else if (Number.isInteger(parseInt(value, 10)) && firstValue !== null)
-    secondValue = value;
-  if (firstValue) firstValue = parseInt(firstValue, 10);
-  if (secondValue) secondValue = parseInt(secondValue, 10);
-}
 
-function operationsHandler(input, value) {
-  let solution;
-  valueHandler(value);
-
-  if (firstValue === null && secondValue === null) return input;
-  if (secondValue === null) operator = input;
-
-  if (input === "AC") {
-    firstValue = null;
-    secondValue = null;
-    return "0";
-  } else if (input === "±") return abs(firstValue, secondValue, solution);
-
-  if (firstValue && secondValue === null) return input;
-
-  if (firstValue !== null && secondValue !== null) {
-    switch (operator) {
-      case "+":
-        solution = sum(firstValue, secondValue);
-        firstValue = null;
-        secondValue = null;
-        return solution;
-      case "-":
-        solution = minus(firstValue, secondValue);
-        firstValue = null;
-        secondValue = null;
-        return solution;
-      case "x":
-        solution = multiply(firstValue, secondValue);
-        firstValue = null;
-        secondValue = null;
-        return solution;
-      case "÷":
-        solution = divide(firstValue, secondValue);
-        firstValue = null;
-        secondValue = null;
-        return solution;
-      case "%":
-        solution = remainder(firstValue, secondValue);
-        firstValue = null;
-        secondValue = null;
-        return solution;
-      case "=":
-        return equal(firstValue);
-      default:
-        break;
-    }
-  }
-}
+/* Theme manager */
 
 function themeSwitch(color) {
-  theme.forEach((item) => {
+  theme_elements.forEach((item) => {
     item.classList.add(color);
   });
 }
