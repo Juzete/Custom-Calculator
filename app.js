@@ -146,6 +146,18 @@ let calc_buttons = [
     formula: POWER,
     type: "math_function",
   },
+  {
+    name: "pow2",
+    symbol: "x2",
+    formula: POWER,
+    type: "math_function",
+  },
+  {
+    name: "pow3",
+    symbol: "x3",
+    formula: POWER,
+    type: "math_function",
+  },
 ];
 
 buttonPanel_element.addEventListener("click", (event) => {
@@ -190,6 +202,24 @@ function calculator(button) {
       formula = button.formula;
       data.operation.push(symbol);
       data.formula.push(formula);
+    }else if(button.name == "pow2"){
+      symbol = "^(";
+      formula = button.formula;
+
+      data.operation.push(symbol);
+      data.formula.push(formula);
+
+      data.operation.push("2)");
+      data.formula.push("2)");
+    }else if(button.name == "pow3"){
+      symbol = "^(";
+      formula = button.formula;
+
+      data.operation.push(symbol);
+      data.formula.push(formula);
+
+      data.operation.push("3)");
+      data.formula.push("3)");
     }
   } else if (button.type == "calculate") {
     let formula_str = data.formula.join("");
