@@ -1,9 +1,9 @@
-const buttonPanel_element = document.querySelector(".button-panel");
-const output_operations_element = document.querySelector(
+const buttonPanelElement = document.querySelector(".button-panel");
+const outputOperationsElement = document.querySelector(
   ".operation-panel .value"
 );
-const output_result_element = document.querySelector(".result .value");
-const theme_elements = document.querySelectorAll(".theme");
+const outputResultElement = document.querySelector(".result .value");
+const themeElements = document.querySelectorAll(".theme");
 
 let memValue = 0;
 const OPERATORS = ["+", "-", "*", "/"];
@@ -14,7 +14,7 @@ let data = {
   formula: [],
 };
 
-let calc_buttons = [
+let calcButtons = [
   {
     symbol: "AC",
     formula: false,
@@ -160,11 +160,11 @@ let calc_buttons = [
   },
 ];
 
-buttonPanel_element.addEventListener("click", (event) => {
+buttonPanelElement.addEventListener("click", (event) => {
   const element = event.target.textContent;
 
   if (!event.target.closest("button")) return;
-  calc_buttons.forEach((button) => {
+  calcButtons.forEach((button) => {
     if (button.symbol == element) calculator(button);
     else if (button.name == event.target.id) calculator(button);
   });
@@ -189,9 +189,9 @@ function calculator(button) {
     }
   } else if (button.type == "save") {
     if (button.symbol == "m+")
-      memValue += parseInt(output_result_element.innerHTML, 10);
+      memValue += parseInt(outputResultElement.innerHTML, 10);
     else if (button.symbol == "m-")
-      memValue -= parseInt(output_result_element.innerHTML, 10);
+      memValue -= parseInt(outputResultElement.innerHTML, 10);
     else if (button.symbol == "mr") updateOutputResult(memValue);
     else if (button.symbol == "mc") memValue = 0;
     console.log(memValue);
@@ -202,7 +202,7 @@ function calculator(button) {
       formula = button.formula;
       data.operation.push(symbol);
       data.formula.push(formula);
-    }else if(button.name == "pow2"){
+    } else if (button.name == "pow2") {
       symbol = "^(";
       formula = button.formula;
 
@@ -211,7 +211,7 @@ function calculator(button) {
 
       data.operation.push("2)");
       data.formula.push("2)");
-    }else if(button.name == "pow3"){
+    } else if (button.name == "pow3") {
       symbol = "^(";
       formula = button.formula;
 
@@ -222,53 +222,53 @@ function calculator(button) {
       data.formula.push("3)");
     }
   } else if (button.type == "calculate") {
-    let formula_str = data.formula.join("");
+    let formulaStr = data.formula.join("");
 
-    let POWER_SEARCH_RESULT = search(data.formula, POWER);
+    let powerSearchResult = search(data.formula, POWER);
 
-    const BASES = powerBaseGetter(data.formula, POWER_SEARCH_RESULT);
+    const BASES = powerBaseGetter(data.formula, powerSearchResult);
     BASES.forEach((base) => {
       let toReplace = base + POWER;
       console.log(base);
       let replacement = "Math.pow(" + base + ",";
       console.log(replacement);
 
-      formula_str = formula_str.replace(toReplace, replacement);
-      console.log(formula_str, "form");
+      formulaStr = formulaStr.replace(toReplace, replacement);
+      console.log(formulaStr, "form");
     });
     console.log(data.formula);
-    updateOutputResult(eval(formula_str));
+    updateOutputResult(eval(formulaStr));
     return;
   }
 
   updateOutputOperation(data.operation.join(""));
 }
 
-function powerBaseGetter(formula, POWER_SEARCH_RESULT) {
+function powerBaseGetter(formula, powerSearchResult) {
   let powers_bases = [];
 
-  POWER_SEARCH_RESULT.forEach((power_index) => {
+  powerSearchResult.forEach((power_index) => {
     let base = [];
 
-    let parentheses_count = 0;
+    let parenthesesCount = 0;
 
-    let previous_index = power_index - 1;
+    let previousIndex = power_index - 1;
 
-    while (previous_index >= 0) {
-      if (formula[previous_index] == "(") parentheses_count--;
-      if (formula[previous_index] == ")") parentheses_count++;
+    while (previousIndex >= 0) {
+      if (formula[previousIndex] == "(") parenthesesCount--;
+      if (formula[previousIndex] == ")") parenthesesCount++;
 
       let is_operator = false;
       OPERATORS.forEach((OPERATOR) => {
-        if (formula[previous_index] == OPERATOR) is_operator = true;
+        if (formula[previousIndex] == OPERATOR) is_operator = true;
       });
 
-      let is_power = formula[previous_index] == POWER;
+      let is_power = formula[previousIndex] == POWER;
 
-      if ((is_operator && parentheses_count == 0) || is_power) break;
+      if ((is_operator && parenthesesCount == 0) || is_power) break;
 
-      base.unshift(formula[previous_index]);
-      previous_index--;
+      base.unshift(formula[previousIndex]);
+      previousIndex--;
     }
     powers_bases.push(base.join(""));
   });
@@ -284,14 +284,14 @@ function search(array, key) {
 }
 
 function updateOutputOperation(operation) {
-  output_operations_element.innerHTML = operation;
+  outputOperationsElement.innerHTML = operation;
 }
 function updateOutputResult(result) {
-  output_result_element.innerHTML = result;
+  outputResultElement.innerHTML = result;
 }
 
 function themeSwitch(color) {
-  theme_elements.forEach((item) => {
+  themeElements.forEach((item) => {
     item.classList.add(color);
   });
 }
