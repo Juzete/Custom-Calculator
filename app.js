@@ -160,6 +160,12 @@ let calcButtons = [
     type: "math_function",
   },
   {
+    name: "10powX",
+    symbol: "10powX",
+    formula: POWER,
+    type: "math_function",
+  },
+  {
     name: "exp",
     symbol: "ex",
     formula: "Math.exp(",
@@ -229,6 +235,14 @@ function calculator(button) {
       data.operation.push("3)");
       data.formula.push("3)");
       isPow = true;
+    } else if (button.name == "10powX") {
+      symbol = "10^(";
+      formula = button.formula;
+      console.log(symbol);
+      console.log(formula);
+      data.operation.push(symbol);
+      data.formula.push(formula);
+      isPow = true;
     } else if (button.name == "exp") {
       symbol = "exp(";
       formula = button.formula;
@@ -256,11 +270,18 @@ function calculator(button) {
 function getPowBase(formulaStr) {
   let powerSearchResult = search(data.formula, POWER);
   const BASES = powerBaseGetter(data.formula, powerSearchResult);
-  BASES.forEach((base) => {
-    let toReplace = base + POWER;
-    let replacement = "Math.pow(" + base + ",";
+  if (BASES.length == 1) {
+    let toReplace = POWER;
+    let replacement = "Math.pow(10" + ",";
     formulaStr = formulaStr.replace(toReplace, replacement);
-  });
+  } else {
+    BASES.forEach((base) => {
+      let toReplace = base + POWER;
+      let replacement = "Math.pow(" + base + ",";
+      formulaStr = formulaStr.replace(toReplace, replacement);
+    });
+  }
+
   return formulaStr;
 }
 
