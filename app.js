@@ -177,6 +177,24 @@ let calcButtons = [
     formula: "1/(",
     type: "math_function",
   },
+  {
+    name: "square-root",
+    symbol: "√(",
+    formula: "Math.sqrt(",
+    type: "math_function",
+  },
+  {
+    name: "qube-root",
+    symbol: "(3)√(",
+    formula: "Math.cbrt(",
+    type: "math_function",
+  },
+  {
+    name: "ln",
+    symbol: "ln2",
+    formula: false,
+    type: "math_function",
+  },
 ];
 
 buttonPanelElement.addEventListener("click", (event) => {
@@ -258,6 +276,15 @@ function calculator(button) {
     } else if (button.name == "1divX"){
       data.operation.push(button.formula);
       data.formula.push(button.formula);
+    } else if (button.name == "square-root"){
+      data.operation.push(button.symbol);
+      data.formula.push(button.formula);
+    } else if (button.name == "qube-root"){
+      data.operation.push(button.symbol);
+      data.formula.push(button.formula);
+    } else if (button.name == "ln") {
+      data.operation.push(Math.LN2.toFixed(5));
+      data.formula.push(Math.LN2.toFixed(5));
     }
   } else if (button.type == "calculate") {
     let formulaStr = data.formula.join("");
