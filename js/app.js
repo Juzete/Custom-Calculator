@@ -1,5 +1,4 @@
-import '../css/style.css';
-import '../index.html';
+import "../css/style.css"
 
 const buttonPanelElement = document.querySelector(".button-panel");
 const outputOperationsElement = document.querySelector(
