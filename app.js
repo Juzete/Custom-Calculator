@@ -171,6 +171,12 @@ let calcButtons = [
     formula: "Math.exp(",
     type: "math_function",
   },
+  {
+    name: "1divX",
+    symbol: "1divX",
+    formula: "1/(",
+    type: "math_function",
+  },
 ];
 
 buttonPanelElement.addEventListener("click", (event) => {
@@ -249,6 +255,9 @@ function calculator(button) {
 
       data.operation.push(symbol);
       data.formula.push(formula);
+    } else if (button.name == "1divX"){
+      data.operation.push(button.formula);
+      data.formula.push(button.formula);
     }
   } else if (button.type == "calculate") {
     let formulaStr = data.formula.join("");
