@@ -1,3 +1,6 @@
+import '../css/style.css';
+import '../index.html';
+
 const buttonPanelElement = document.querySelector(".button-panel");
 const outputOperationsElement = document.querySelector(
   ".operation-panel .value"
