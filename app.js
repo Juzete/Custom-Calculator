@@ -6,6 +6,7 @@ const outputResultElement = document.querySelector(".result .value");
 const themeElements = document.querySelectorAll(".theme");
 
 let memValue = 0;
+let isPow = false;
 const OPERATORS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
 
@@ -158,6 +159,12 @@ let calcButtons = [
     formula: POWER,
     type: "math_function",
   },
+  {
+    name: "exp",
+    symbol: "ex",
+    formula: "Math.exp(",
+    type: "math_function",
+  },
 ];
 
 buttonPanelElement.addEventListener("click", (event) => {
@@ -177,7 +184,6 @@ function calculator(button) {
   } else if (button.type == "number") {
     data.operation.push(button.symbol);
     data.formula.push(button.formula);
-    console.log(data);
   } else if (button.type == "key") {
     if (button.symbol == "AC") {
       data.operation = [];
@@ -202,6 +208,7 @@ function calculator(button) {
       formula = button.formula;
       data.operation.push(symbol);
       data.formula.push(formula);
+      isPow = true;
     } else if (button.name == "pow2") {
       symbol = "^(";
       formula = button.formula;
@@ -211,6 +218,7 @@ function calculator(button) {
 
       data.operation.push("2)");
       data.formula.push("2)");
+      isPow = true;
     } else if (button.name == "pow3") {
       symbol = "^(";
       formula = button.formula;
@@ -220,23 +228,23 @@ function calculator(button) {
 
       data.operation.push("3)");
       data.formula.push("3)");
+      isPow = true;
+    } else if (button.name == "exp") {
+      symbol = "exp(";
+      formula = button.formula;
+
+      data.operation.push(symbol);
+      data.formula.push(formula);
     }
   } else if (button.type == "calculate") {
     let formulaStr = data.formula.join("");
 
-    let powerSearchResult = search(data.formula, POWER);
+    if (isPow) {
+      formulaStr = getPowBase(formulaStr);
+      isPow = false;
+    }
 
-    const BASES = powerBaseGetter(data.formula, powerSearchResult);
-    BASES.forEach((base) => {
-      let toReplace = base + POWER;
-      console.log(base);
-      let replacement = "Math.pow(" + base + ",";
-      console.log(replacement);
-
-      formulaStr = formulaStr.replace(toReplace, replacement);
-      console.log(formulaStr, "form");
-    });
-    console.log(data.formula);
+    console.log(formulaStr);
     updateOutputResult(eval(formulaStr));
     return;
   }
@@ -244,35 +252,45 @@ function calculator(button) {
   updateOutputOperation(data.operation.join(""));
 }
 
+/* Get Power Base */
+function getPowBase(formulaStr) {
+  let powerSearchResult = search(data.formula, POWER);
+  const BASES = powerBaseGetter(data.formula, powerSearchResult);
+  BASES.forEach((base) => {
+    let toReplace = base + POWER;
+    let replacement = "Math.pow(" + base + ",";
+    formulaStr = formulaStr.replace(toReplace, replacement);
+  });
+  return formulaStr;
+}
+
 function powerBaseGetter(formula, powerSearchResult) {
-  let powers_bases = [];
+  let powersBases = [];
 
   powerSearchResult.forEach((power_index) => {
     let base = [];
-
     let parenthesesCount = 0;
-
     let previousIndex = power_index - 1;
 
     while (previousIndex >= 0) {
       if (formula[previousIndex] == "(") parenthesesCount--;
       if (formula[previousIndex] == ")") parenthesesCount++;
 
-      let is_operator = false;
+      let isOperator = false;
       OPERATORS.forEach((OPERATOR) => {
-        if (formula[previousIndex] == OPERATOR) is_operator = true;
+        if (formula[previousIndex] == OPERATOR) isOperator = true;
       });
 
-      let is_power = formula[previousIndex] == POWER;
+      let isPower = formula[previousIndex] == POWER;
 
-      if ((is_operator && parenthesesCount == 0) || is_power) break;
+      if ((isOperator && parenthesesCount == 0) || isPower) break;
 
       base.unshift(formula[previousIndex]);
       previousIndex--;
     }
-    powers_bases.push(base.join(""));
+    powersBases.push(base.join(""));
   });
-  return powers_bases;
+  return powersBases;
 }
 
 function search(array, key) {
