@@ -195,6 +195,12 @@ let calcButtons = [
     formula: false,
     type: "math_function",
   },
+  {
+    name: "log10",
+    symbol: "log10",
+    formula: "Math.log(10)",
+    type: "math_function",
+  },
 ];
 
 buttonPanelElement.addEventListener("click", (event) => {
@@ -230,7 +236,6 @@ function calculator(button) {
       memValue -= parseInt(outputResultElement.innerHTML, 10);
     else if (button.symbol == "mr") updateOutputResult(memValue);
     else if (button.symbol == "mc") memValue = 0;
-    console.log(memValue);
   } else if (button.type == "math_function") {
     let symbol, formula;
     if (button.name == "powY") {
@@ -262,8 +267,6 @@ function calculator(button) {
     } else if (button.name == "10powX") {
       symbol = "10^(";
       formula = button.formula;
-      console.log(symbol);
-      console.log(formula);
       data.operation.push(symbol);
       data.formula.push(formula);
       isPow = true;
@@ -273,18 +276,21 @@ function calculator(button) {
 
       data.operation.push(symbol);
       data.formula.push(formula);
-    } else if (button.name == "1divX"){
+    } else if (button.name == "1divX") {
       data.operation.push(button.formula);
       data.formula.push(button.formula);
-    } else if (button.name == "square-root"){
+    } else if (button.name == "square-root") {
       data.operation.push(button.symbol);
       data.formula.push(button.formula);
-    } else if (button.name == "qube-root"){
+    } else if (button.name == "qube-root") {
       data.operation.push(button.symbol);
       data.formula.push(button.formula);
     } else if (button.name == "ln") {
       data.operation.push(Math.LN2.toFixed(5));
       data.formula.push(Math.LN2.toFixed(5));
+    } else if (button.name == "log10") {
+      data.operation.push(Math.log(10));
+      data.formula.push(button.formula);
     }
   } else if (button.type == "calculate") {
     let formulaStr = data.formula.join("");
@@ -294,7 +300,6 @@ function calculator(button) {
       isPow = false;
     }
 
-    console.log(formulaStr);
     updateOutputResult(eval(formulaStr));
     return;
   }
