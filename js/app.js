@@ -301,7 +301,6 @@ function calculator(button) {
     } else if (button.name == "x-root") {
       data.operation.push(button.symbol);
       data.formula.push(button.formula);
-      console.log(button.formula);
       isPow = true;
       isRoot = true;
     }
@@ -309,7 +308,6 @@ function calculator(button) {
     let formulaStr = data.formula.join("");
 
     if (isPow) {
-      console.log(1);
       formulaStr = getPowBase(formulaStr);
       isPow = false;
     }
@@ -338,7 +336,6 @@ function getPowBase(formulaStr) {
       let toReplace = base + POWER;
       let replacement = "Math.pow(" + base + "," + "1/";
       formulaStr = formulaStr.replace(toReplace, replacement);
-      console.log(formulaStr);
     });
   } else if (BASES[0] === "") {
     let toReplace = POWER;
@@ -351,8 +348,6 @@ function getPowBase(formulaStr) {
       formulaStr = formulaStr.replace(toReplace, replacement);
     });
   }
-  console.log(formulaStr);
-
   return formulaStr;
 }
 
