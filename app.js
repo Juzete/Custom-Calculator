@@ -7,6 +7,7 @@ const themeElements = document.querySelectorAll(".theme");
 
 let memValue = 0;
 let isPow = false;
+let isRoot = true;
 const OPERATORS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
 
@@ -201,6 +202,12 @@ let calcButtons = [
     formula: "Math.log(10)",
     type: "math_function",
   },
+  {
+    name: "x-root",
+    symbol: "√(",
+    formula: POWER,
+    type: "math_function",
+  },
 ];
 
 buttonPanelElement.addEventListener("click", (event) => {
@@ -291,11 +298,18 @@ function calculator(button) {
     } else if (button.name == "log10") {
       data.operation.push(Math.log(10));
       data.formula.push(button.formula);
+    } else if (button.name == "x-root") {
+      data.operation.push(button.symbol);
+      data.formula.push(button.formula);
+      console.log(button.formula);
+      isPow = true;
+      isRoot = true;
     }
   } else if (button.type == "calculate") {
     let formulaStr = data.formula.join("");
 
     if (isPow) {
+      console.log(1);
       formulaStr = getPowBase(formulaStr);
       isPow = false;
     }
@@ -311,7 +325,22 @@ function calculator(button) {
 function getPowBase(formulaStr) {
   let powerSearchResult = search(data.formula, POWER);
   const BASES = powerBaseGetter(data.formula, powerSearchResult);
-  if (BASES.length == 1) {
+  if (isRoot && BASES[0] === "") {
+    data.formula.pop();
+    data.formula.shift();
+    data.formula.unshift("Math.sqrt(");
+    data.formula.push(")");
+    formulaStr = data.formula.join("");
+    isRoot = false;
+    return formulaStr;
+  } else if (isRoot) {
+    BASES.forEach((base) => {
+      let toReplace = base + POWER;
+      let replacement = "Math.pow(" + base + "," + "1/";
+      formulaStr = formulaStr.replace(toReplace, replacement);
+      console.log(formulaStr);
+    });
+  } else if (BASES[0] === "") {
     let toReplace = POWER;
     let replacement = "Math.pow(10" + ",";
     formulaStr = formulaStr.replace(toReplace, replacement);
@@ -322,6 +351,7 @@ function getPowBase(formulaStr) {
       formulaStr = formulaStr.replace(toReplace, replacement);
     });
   }
+  console.log(formulaStr);
 
   return formulaStr;
 }
