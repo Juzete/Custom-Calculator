@@ -1,4 +1,4 @@
-import "../css/style.css"
+// import "../css/style.css"
 
 const buttonPanelElement = document.querySelector(".button-panel");
 const outputOperationsElement = document.querySelector(
@@ -9,7 +9,7 @@ const themeElements = document.querySelectorAll(".theme");
 
 let memValue = 0;
 let isPow = false;
-let isRoot = true;
+let isRoot = false;
 const OPERATORS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
 
@@ -17,6 +17,25 @@ let data = {
   operation: [],
   formula: [],
 };
+
+let config = [
+  {
+    regexp: "[0-9.,]+*[0-9.,]+",
+    priority: 1,
+    fn: (str) => {
+      const op = str.replace(/[0-9\.,]+/g, "");
+      const [a, b] = str.split(/\+|\*|\//);
+      switch (op) {
+        case "+":
+          return +a + +b;
+        case "*":
+          return +a * +b;
+        case "/":
+          return +a / +b;
+      }
+    },
+  },
+];
 
 let calcButtons = [
   {
@@ -313,12 +332,73 @@ function calculator(button) {
       formulaStr = getPowBase(formulaStr);
       isPow = false;
     }
-
+    console.log(formulaStr);
+    formulaStr = "12*5-(5*(32+4))+3";
+    console.log(formulaStr);
+    console.log(parsePlusSeparatedExpression(formulaStr));
     updateOutputResult(eval(formulaStr));
     return;
   }
 
   updateOutputOperation(data.operation.join(""));
+}
+
+/* Parser */
+
+function split(expression, operator) {
+  const result = [];
+  let braces = 0;
+  let currentChunk = "";
+  for (let i = 0; i < expression.length; ++i) {
+    const curCh = expression[i];
+    if (curCh == "(") {
+      braces++;
+    } else if (curCh == ")") {
+      braces--;
+    }
+    if (braces == 0 && operator == curCh) {
+      result.push(currentChunk);
+      currentChunk = "";
+    } else currentChunk += curCh;
+  }
+  if (currentChunk != "") {
+    result.push(currentChunk);
+  }
+  return result;
+}
+
+function parseMultiplicationSeparatedExpression(expression) {
+  const numbersString = split(expression, "*");
+  const numbers = numbersString.map((noStr) => {
+    if (noStr[0] == "(") {
+      const expr = noStr.substr(1, noStr.length - 2);
+      return parsePlusSeparatedExpression(expr);
+    }
+    return +noStr;
+  });
+  const initialValue = 1.0;
+  const result = numbers.reduce((acc, no) => acc * no, initialValue);
+  return result;
+}
+
+function parseMinusSeparatedExpression(expression) {
+  const numbersString = split(expression, "-");
+  const numbers = numbersString.map((noStr) =>
+    parseMultiplicationSeparatedExpression(noStr)
+  );
+  const initialValue = numbers[0];
+  const result = numbers.slice(1).reduce((acc, no) => acc - no, initialValue);
+  return result;
+}
+
+function parsePlusSeparatedExpression(expression) {
+  const numbersString = split(expression, "+");
+  const numbers = numbersString.map((noStr) =>
+    parseMinusSeparatedExpression(noStr)
+  );
+  const initialValue = 0.0;
+  const result = numbers.reduce((acc, no) => acc + no, initialValue);
+  return result;
 }
 
 /* Get Power Base */
@@ -338,6 +418,7 @@ function getPowBase(formulaStr) {
       let toReplace = base + POWER;
       let replacement = "Math.pow(" + base + "," + "1/";
       formulaStr = formulaStr.replace(toReplace, replacement);
+      isRoot = false;
     });
   } else if (BASES[0] === "") {
     let toReplace = POWER;
