@@ -12,30 +12,13 @@ let isPow = false;
 let isRoot = false;
 const OPERATORS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
+let formulaStr;
 
 let data = {
   operation: [],
   formula: [],
 };
 
-let config = [
-  {
-    regexp: "[0-9.,]+*[0-9.,]+",
-    priority: 1,
-    fn: (str) => {
-      const op = str.replace(/[0-9\.,]+/g, "");
-      const [a, b] = str.split(/\+|\*|\//);
-      switch (op) {
-        case "+":
-          return +a + +b;
-        case "*":
-          return +a * +b;
-        case "/":
-          return +a / +b;
-      }
-    },
-  },
-];
 
 let calcButtons = [
   {
@@ -242,102 +225,110 @@ buttonPanelElement.addEventListener("click", (event) => {
 });
 
 function calculator(button) {
-  if (button.type == "operator") {
-    data.operation.push(button.symbol);
-    data.formula.push(button.formula);
-  } else if (button.type == "number") {
-    data.operation.push(button.symbol);
-    data.formula.push(button.formula);
-  } else if (button.type == "key") {
-    if (button.symbol == "AC") {
-      data.operation = [];
-      data.formula = [];
-      updateOutputResult(0);
-    } else if (button.symbol == "←") {
-      data.operation.pop();
-      data.formula.pop();
-    }
-  } else if (button.type == "save") {
-    if (button.symbol == "m+")
-      memValue += parseInt(outputResultElement.innerHTML, 10);
-    else if (button.symbol == "m-")
-      memValue -= parseInt(outputResultElement.innerHTML, 10);
-    else if (button.symbol == "mr") updateOutputResult(memValue);
-    else if (button.symbol == "mc") memValue = 0;
-  } else if (button.type == "math_function") {
-    let symbol, formula;
-    if (button.name == "powY") {
-      symbol = "^(";
-      formula = button.formula;
-      data.operation.push(symbol);
-      data.formula.push(formula);
-      isPow = true;
-    } else if (button.name == "pow2") {
-      symbol = "^(";
-      formula = button.formula;
-
-      data.operation.push(symbol);
-      data.formula.push(formula);
-
-      data.operation.push("2)");
-      data.formula.push("2)");
-      isPow = true;
-    } else if (button.name == "pow3") {
-      symbol = "^(";
-      formula = button.formula;
-
-      data.operation.push(symbol);
-      data.formula.push(formula);
-
-      data.operation.push("3)");
-      data.formula.push("3)");
-      isPow = true;
-    } else if (button.name == "10powX") {
-      symbol = "10^(";
-      formula = button.formula;
-      data.operation.push(symbol);
-      data.formula.push(formula);
-      isPow = true;
-    } else if (button.name == "exp") {
-      symbol = "exp(";
-      formula = button.formula;
-
-      data.operation.push(symbol);
-      data.formula.push(formula);
-    } else if (button.name == "1divX") {
-      data.operation.push(button.formula);
-      data.formula.push(button.formula);
-    } else if (button.name == "square-root") {
+  switch (button.type) {
+    case "operator":
       data.operation.push(button.symbol);
       data.formula.push(button.formula);
-    } else if (button.name == "qube-root") {
-      data.operation.push(button.symbol);
-      data.formula.push(button.formula);
-    } else if (button.name == "ln") {
-      data.operation.push(Math.LN2.toFixed(5));
-      data.formula.push(Math.LN2.toFixed(5));
-    } else if (button.name == "log10") {
-      data.operation.push(Math.log(10));
-      data.formula.push(button.formula);
-    } else if (button.name == "x-root") {
-      data.operation.push(button.symbol);
-      data.formula.push(button.formula);
-      isPow = true;
-      isRoot = true;
-    }
-  } else if (button.type == "calculate") {
-    let formulaStr = data.formula.join("");
+      break;
 
-    if (isPow) {
-      formulaStr = getPowBase(formulaStr);
-      isPow = false;
-    }
-    console.log(formulaStr);
-    formulaStr = "12*5-(5*(32+4))+3";
-    console.log(formulaStr);
-    console.log(parsePlusSeparatedExpression(formulaStr));
-    updateOutputResult(eval(formulaStr));
-    return;
+      case "number":
+        data.operation.push(button.symbol);
+        data.formula.push(button.formula);
+        break;
+
+      case "key":
+        if (button.symbol == "AC") {
+          data.operation = [];
+          data.formula = [];
+          updateOutputResult(0);
+        } else if (button.symbol == "←") {
+          data.operation.pop();
+          data.formula.pop();
+        }
+      break;
+
+      case "save":
+        if (button.symbol == "m+") memValue += parseInt(outputResultElement.innerHTML, 10);
+        else if (button.symbol == "m-") memValue -= parseInt(outputResultElement.innerHTML, 10);
+        else if (button.symbol == "mr") updateOutputResult(memValue);
+        else if (button.symbol == "mc") memValue = 0;
+      break;
+
+      case "math_function":
+        let symbol, formula;
+        if (button.name == "powY") {
+          symbol = "^(";
+          formula = button.formula;
+          data.operation.push(symbol);
+          data.formula.push(formula);
+          isPow = true;
+        } else if (button.name == "pow2") {
+          symbol = "^(";
+          formula = button.formula;
+          data.operation.push(symbol);
+          data.formula.push(formula);
+          data.operation.push("2)");
+          data.formula.push("2)");
+          isPow = true;
+        } else if (button.name == "pow3") {
+          symbol = "^(";
+          formula = button.formula;
+          data.operation.push(symbol);
+          data.formula.push(formula);
+          data.operation.push("3)");
+          data.formula.push("3)");
+          isPow = true;
+        } else if (button.name == "10powX") {
+          symbol = "10^(";
+          formula = button.formula;
+          data.operation.push(symbol);
+          data.formula.push(formula);
+          isPow = true;
+        } else if (button.name == "exp") {
+          symbol = "exp(";
+          formula = button.formula;
+          data.operation.push(symbol);
+          data.formula.push(formula);
+        } else if (button.name == "1divX") {
+          data.operation.push(button.formula);
+          data.formula.push(button.formula);
+        } else if (button.name == "square-root") {
+          data.operation.push(button.symbol);
+          data.formula.push(button.formula);
+        } else if (button.name == "qube-root") {
+          data.operation.push(button.symbol);
+          data.formula.push(button.formula);
+        } else if (button.name == "ln") {
+          data.operation.push(Math.LN2.toFixed(5));
+          data.formula.push(Math.LN2.toFixed(5));
+        } else if (button.name == "log10") {
+          data.operation.push(Math.log(10));
+          data.formula.push(button.formula);
+        } else if (button.name == "x-root") {
+          data.operation.push(button.symbol);
+          data.formula.push(button.formula);
+          isPow = true;
+          isRoot = true;
+        }
+      break;
+
+      case "calculate":
+        formulaStr = data.formula.join("");
+
+        if (isPow) {
+          formulaStr = getPowBase(formulaStr);
+          isPow = false;
+        }
+        
+        console.log(formulaStr);
+        formulaStr = "12*5-(5*(32+4))+3";
+        console.log(formulaStr);
+        console.log(parsePlusSeparatedExpression(formulaStr));
+        updateOutputResult(eval(formulaStr));
+        return;
+
+    default:
+      break;
   }
 
   updateOutputOperation(data.operation.join(""));
