@@ -13,6 +13,7 @@ let isRoot = false;
 const OPERATORS = ["+", "-", "*", "/"];
 const POWER = "POWER(";
 let formulaStr;
+let symbol, formula;
 
 let data = {
   operation: [],
@@ -255,7 +256,6 @@ function calculator(button) {
       break;
 
       case "math_function":
-        let symbol, formula;
         if (button.name == "powY") {
           symbol = "^(";
           formula = button.formula;
@@ -319,12 +319,12 @@ function calculator(button) {
           formulaStr = getPowBase(formulaStr);
           isPow = false;
         }
-        
+
         console.log(formulaStr);
-        formulaStr = "12*5-(5*(32+4))+3";
+        formulaStr = "12*5-((5/32+4)/2+4)+3";
         console.log(formulaStr);
         console.log(parsePlusSeparatedExpression(formulaStr));
-        updateOutputResult(eval(formulaStr));
+        updateOutputResult(parsePlusSeparatedExpression(formulaStr));
         return;
 
     default:
@@ -360,23 +360,55 @@ function split(expression, operator) {
 
 function parseMultiplicationSeparatedExpression(expression) {
   const numbersString = split(expression, "*");
+  let numbers = numbersString.map((noStr) => {
+    if (noStr[0] == "(") {
+      console.log(noStr,"no str multi")
+      const expr = noStr.substr(1, noStr.length - 2);
+      console.log(expr,"expr")
+      return parsePlusSeparatedExpression(expr);
+    }
+    return +noStr;
+  });
+
+  if (isNaN(numbers[0])) {
+    return numbers = parseDivideSeparatedExpression(numbersString);
+  }
+
+  console.log(numbers,"num multi")
+  const initialValue = 1.0;
+  const result = numbers.reduce((acc, no) => acc * no, initialValue);
+  return result;
+}
+
+function parseDivideSeparatedExpression(expression) {
+  const numbersString = split(expression.toString(), "/");
+  console.log(numbersString,"div")
   const numbers = numbersString.map((noStr) => {
     if (noStr[0] == "(") {
+      console.log(noStr,"no str div")
       const expr = noStr.substr(1, noStr.length - 2);
       return parsePlusSeparatedExpression(expr);
     }
     return +noStr;
   });
-  const initialValue = 1.0;
-  const result = numbers.reduce((acc, no) => acc * no, initialValue);
+  console.log(numbers,"num div")
+  const result = numbers.reduce((acc, no,index) =>{
+    if (index == 0) return;
+    return acc / no;
+
+  },);
+  console.log(result)
   return result;
 }
+
+
 
 function parseMinusSeparatedExpression(expression) {
   const numbersString = split(expression, "-");
   const numbers = numbersString.map((noStr) =>
     parseMultiplicationSeparatedExpression(noStr)
   );
+  console.log(numbers,"num minus")
   const initialValue = numbers[0];
   const result = numbers.slice(1).reduce((acc, no) => acc - no, initialValue);
   return result;
@@ -387,6 +419,7 @@ function parsePlusSeparatedExpression(expression) {
   const numbers = numbersString.map((noStr) =>
     parseMinusSeparatedExpression(noStr)
   );
+  console.log(numbers,"num plus")
   const initialValue = 0.0;
   const result = numbers.reduce((acc, no) => acc + no, initialValue);
   return result;
