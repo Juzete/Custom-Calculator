@@ -122,12 +122,12 @@ function calculator(button) {
 
       case "calculate":
         formulaStr = data.formula.join("");
-
         if (isPow) {
           formulaStr = getPowBase(formulaStr,data,POWER,isRoot);
           isPow = false;
         }
-
+        console.log(formulaStr)
+       // console.log(formulaStr);
         updateOutputResult(parsePlusSeparatedExpression(formulaStr),outputResultElement);
         return;
     default:
