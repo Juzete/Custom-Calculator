@@ -59,7 +59,7 @@ function calculator(button) {
       case "save":
         if (button.symbol == "m+") memValue += parseInt(outputResultElement.innerHTML, 10);
         else if (button.symbol == "m-") memValue -= parseInt(outputResultElement.innerHTML, 10);
-        else if (button.symbol == "mr") updateOutputResult(memValue);
+        else if (button.symbol == "mr") updateOutputResult(memValue,outputResultElement);
         else if (button.symbol == "mc") memValue = 0;
       break;
 
@@ -127,15 +127,11 @@ function calculator(button) {
           formulaStr = getPowBase(formulaStr,data,POWER,isRoot);
           isPow = false;
         }
-        
-        updateOutputResult(parsePlusSeparatedExpression(formulaStr));
+
+        updateOutputResult(parsePlusSeparatedExpression(formulaStr),outputResultElement);
         return;
     default:
       break;
   }
   updateOutputOperation(data.operation.join(""),outputOperationsElement);
 }
-
-
-
-

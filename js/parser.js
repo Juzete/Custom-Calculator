@@ -22,7 +22,7 @@ function split(expression, operator) {
     return result;
   }
   
-  function parseMultiplicationSeparatedExpression(expression) {
+function parseMultiplicationSeparatedExpression(expression) {
     const numbersString = split(expression, "*");
     let numbers = numbersString.map((noStr) => {
       if (noStr[0] == "(") {
@@ -69,7 +69,7 @@ function split(expression, operator) {
     return result;
   }
   
-  function parsePlusSeparatedExpression(expression) {
+export function parsePlusSeparatedExpression(expression) {
     const numbersString = split(expression, "+");
     const numbers = numbersString.map((noStr) =>
       parseMinusSeparatedExpression(noStr)
