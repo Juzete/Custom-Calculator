@@ -1,3 +1,4 @@
+import '../style.css';
 import {updateOutputOperation, updateOutputResult, themeSwitch, getPowBase} from "./functions.js";
 import { calcButtons } from "./calcButtons.js";
 import {parsePlusSeparatedExpression} from "./parser.js";
@@ -15,6 +16,8 @@ let isRoot = false;
 const POWER = "POWER(";
 let formulaStr;
 let symbol, formula;
+let regexp = new RegExp(/Math.pow\(([^)]+)\)/g);
+
 
 let data = {
   operation: [],
@@ -126,12 +129,33 @@ function calculator(button) {
           formulaStr = getPowBase(formulaStr,data,POWER,isRoot);
           isPow = false;
         }
-        console.log(formulaStr)
-       // console.log(formulaStr);
-        updateOutputResult(parsePlusSeparatedExpression(formulaStr),outputResultElement);
+
+        formulaStr = powReplacer(formulaStr,regexp);
+
+        try {
+          parsePlusSeparatedExpression(formulaStr)
+        } catch (error) {
+          console.error(error)
+        }
+    
+        if (!isFinite((parsePlusSeparatedExpression(formulaStr)))) updateOutputResult("divide by zero",outputResultElement); 
+        else if (isNaN((parsePlusSeparatedExpression(formulaStr)))) updateOutputResult("reference error",outputResultElement);
+        else updateOutputResult(parsePlusSeparatedExpression(formulaStr),outputResultElement);
+
         return;
     default:
       break;
   }
   updateOutputOperation(data.operation.join(""),outputOperationsElement);
+}
+
+function powReplacer (str,regexp) {
+  let array = [...str.matchAll(regexp)];
+  let powNum = [];
+  array.forEach(item => {
+    let temp = item[1].split(",");
+    powNum.push(Math.pow(parsePlusSeparatedExpression(temp[0]),parsePlusSeparatedExpression(temp[1]))); 
+  })
+  array.forEach((item, index) => str = str.replace(item[0],powNum[index].toString()))
+  return str;
 }

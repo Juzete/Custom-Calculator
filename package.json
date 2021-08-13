@@ -23,7 +23,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --mode production",
     "dev": "cross-env NODE_ENV=development webpack --mode development",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "author": "",
   "license": "ISC"
