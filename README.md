@@ -27,3 +27,8 @@ npm run dev
 - **js** Сontains source code and dependent modules
 - **css** Contains style sheets
 - **app** Contains setuped project files
+
+## Task
+
+
+<a  href="https://docs.google.com/document/d/1j8DnTnRSNoRBdYtKu3Rgk1STLso4X5Rev2-oEyxMsK8/edit">TASK</a>
