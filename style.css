@@ -133,7 +133,7 @@ button {
 }
 
 /* Dark Theme */
-body.dark {
+body.dark   {
   background: linear-gradient(90deg, #b9deed, #efefef);
 }
 
@@ -141,35 +141,35 @@ body.dark {
   color: rgb(241, 241, 241);
 }
 
-.operation-panel.dark {
+.dark .operation-panel {
   color: #bebebe;
 }
 
-.operation-panel.dark,
-.result.dark {
+.dark .operation-panel,
+.dark .result {
   background-color: #464749;
 }
 
-.button-panel.dark {
+.dark .button-panel {
   background: #676869;
 }
 
-button.dark {
+.dark button {
   background: #767778;
   color: rgb(241, 241, 241);
 }
 
-.button-panel.dark > button:hover {
+.dark .button-panel > button:hover {
   background-color: #999999;
 }
 
-.second-color.dark {
+.dark .second-color {
   background: #fea003;
 }
 
 /* Light Theme */
 
-body.light {
+body.light  {
   background: linear-gradient(90deg, #f598a8, #f6edb2);
 }
 
@@ -177,28 +177,28 @@ body.light {
   color: rgb(22, 22, 22);
 }
 
-.operation-panel.light {
+.light .operation-panel {
   color: rgb(107, 107, 107);
 }
 
-.result.light,
-.operation-panel.light {
+.light .result,
+.light .operation-panel {
   background-color: #cfe0fd;
 }
 
-.button-panel.light {
+.light .button-panel {
   background: #afafaf;
 }
 
-button.light {
+.light button {
   background: #ececec;
   color: black;
 }
 
-.button-panel.light > button:hover {
+.light .button-panel > button:hover {
   background-color: #c4cdff;
 }
 
-.second-color.light {
+.light .second-color {
   background: #8785fa;
 }
