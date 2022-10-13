@@ -76,7 +76,6 @@ select {
   }
 }
 
-
 .calc-container {
   width: 600px;
   height: 450px;
@@ -133,7 +132,7 @@ button {
 }
 
 /* Dark Theme */
-body.dark   {
+body.dark {
   background: linear-gradient(90deg, #b9deed, #efefef);
 }
 
@@ -169,7 +168,7 @@ body.dark   {
 
 /* Light Theme */
 
-body.light  {
+body.light {
   background: linear-gradient(90deg, #f598a8, #f6edb2);
 }
 
